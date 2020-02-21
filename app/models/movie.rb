@@ -10,9 +10,10 @@ class Movie < ActiveRecord::Base
             end
         end
         ratings.sort!
-        ratings.each do |rating|
-           puts rating
-        end
+        return ratings
+        #ratings.each do |rating|
+          # puts rating
+       # end
     end
             
         
