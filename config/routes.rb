@@ -16,6 +16,10 @@ Rails.application.routes.draw do
 
   resources :movies
   
+  resource :movies do
+    get "sort"
+  end
+  
   # Example resource route with options:
   #   resources :products do
   #     member do
