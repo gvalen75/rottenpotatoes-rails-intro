@@ -15,6 +15,13 @@ class Movie < ActiveRecord::Base
           # puts rating
        # end
     end
+    
+    def self.with_ratings(ratings)
+        return Movie.where("rating IN (?)", ratings.keys)
+      #movies each do |movie|
+        #puts movie
+      #end
+    end
             
         
     

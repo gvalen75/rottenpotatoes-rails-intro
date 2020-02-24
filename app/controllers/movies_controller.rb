@@ -15,6 +15,13 @@ class MoviesController < ApplicationController
     @movies = Movie.order(params[:sort_by])
     @sort_column = params[:sort_by]
     @all_ratings = Movie.find_all_ratings()
+    @selected_ratings = (params[:ratings].present? ? params[:ratings] : [])
+    if !(params[:ratings] == nil)
+      #params[:ratings].hash each do |rating|
+        #puts rating
+      #end
+      @movies = Movie.with_ratings(params[:ratings])
+    end
   end
 
   def new
