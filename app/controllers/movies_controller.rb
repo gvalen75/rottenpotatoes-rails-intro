@@ -12,16 +12,49 @@ class MoviesController < ApplicationController
 
   def index
     #@movies = Movie.all
-    @movies = Movie.order(params[:sort_by])
-    @sort_column = params[:sort_by]
+    #puts params[:ratings]
+    #@temp = params[:sort_by]
+    #if params[:sort_by] == session[:sort_by]
+      #@movies = Movie.order(session[:sort_by])
+    #elsif session[:sort_by] == nil
+      #session[:sort_by] = params[:sort_by]
+    #else
+      #session[:sort_by].reverse_merge!(params[:sort_by])
+     # @temp each do |key,value|
+        #new_hash = Hash.new
+        #new_hash[key] = value
+        #if !(session[:sort_by].has_value?(value))
+          #session[:sort_by][key] = value
+        #end
+      #end
+    #end
+    #if session[:sort_by] == ''
+      #session[:sort_by] = params[:sort_by]
+    #end
+    #puts params[:sort_by]
+    #puts session[:sort_by]
+    #@movies = Movie.order(params[:sort_by])
+    @sort_column = params[:sort_by] || session[:sort_by]
     @all_ratings = Movie.find_all_ratings()
-    @selected_ratings = (params[:ratings].present? ? params[:ratings] : [])
-    if !(params[:ratings] == nil)
+    @selected_ratings = (params[:ratings].present? && params[:ratings].is_a?(Hash) ? params[:ratings].keys : (session[:ratings]) || @all_ratings)
+    @movies = Movie.with_ratings(@selected_ratings, @sort_column)
+    
+    if (params[:sort_by] != session[:sort_by]) || (params[:ratings] != session[:ratings])
+      session[:sort_by] = @sort_column
+      session[:ratings] = @selected_ratings
+    end
+    
+    if (params[:sort_by].nil? && !(session[:sort_by].nil?)) || (params[:ratings].nil? && !(session[:ratings].nil?))
+      flash.keep
+      redirect_to movies_path(sort_by: @sort_column, ratings: @selected_ratings)
+      #redirect_to movies_path(sort: @sort, ratings: @ratings)
+    end
+    
+    #if !(params[:ratings] == nil)
       #params[:ratings].hash each do |rating|
         #puts rating
       #end
-      @movies = Movie.with_ratings(params[:ratings])
-    end
+    #end
   end
 
   def new

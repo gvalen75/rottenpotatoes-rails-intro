@@ -16,8 +16,8 @@ class Movie < ActiveRecord::Base
        # end
     end
     
-    def self.with_ratings(ratings)
-        return Movie.where("rating IN (?)", ratings.keys)
+    def self.with_ratings(ratings, sort_column)
+        return Movie.where("rating IN (?)", ratings).order(sort_column)
       #movies each do |movie|
         #puts movie
       #end
