@@ -84,4 +84,9 @@ class MoviesController < ApplicationController
     flash[:notice] = "Movie '#{@movie.title}' deleted."
     redirect_to movies_path
   end
+  
+  helper_method :sort_column_check
+  def sort_column_check(column)
+    "hilite" if @sort_column == column
+  end
 end
